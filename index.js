@@ -18,7 +18,7 @@ const home = async () => {
                 'View Departments',
                 'View Roles',
                 'View Employees',
-                'Add Deparment',
+                'Add Department',
                 'Add Role',
                 'Add Employee',
                 'Update Employee',
@@ -36,7 +36,7 @@ const home = async () => {
                 viewEmployees();
                 break;
             case 'Add Department':
-                addDeparment();
+                addDepartment();
                 break;
             case 'Add Role':
                 addRole();
@@ -104,3 +104,37 @@ const viewEmployees = async () => {
         home();
     };
 };
+
+const addDepartment = async () => {
+    try {
+        let newDept = await inquirer.prompt([
+            {
+                name: 'deptName',
+                type: 'input',
+                message: 'What is the name of the new department?',
+                validate: deptNameInput => {
+                    if (deptNameInput) {
+                        return true;
+                    } else {
+                        console.log('Please add the name of the new department');
+                        return false;
+                    }
+                }
+            }
+        ]);
+        const sql = 'INSERT INTO department SET ?'
+        db.query(sql, {
+            name: newDept.deptName
+        });
+        console.log('New department added')
+        home();
+    } catch (err) {
+        console.log(err);
+        home();
+    };
+};
+
+const addRole = async () => {
+
+}
+

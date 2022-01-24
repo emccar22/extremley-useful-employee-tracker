@@ -267,13 +267,13 @@ function addEmployee() {
 
 function updateEmployee() {
     let employeeArray = [];
-    db.query('SELECT id, first_name, last_name FROM EMPLOYEE', (err, res) => {
+    db.query('SELECT id, first_name, last_name FROM employee', (err, res) => {
         if (err) throw err;
         res.forEach((element) => {
             employeeArray.push(`${element.id} ${element.first_name} ${element.last_name}`);
         });
         let roleArray = [];
-        db.query('SELECT id, title FROM ROLE', (err, res) => {
+        db.query('SELECT id, title FROM role', (err, res) => {
             if (err) throw err;
             res.forEach((element) => {
                 roleArray.push(`${element.id} ${element.title}`);

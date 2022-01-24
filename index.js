@@ -246,8 +246,7 @@ function addEmployee() {
             ])
             .then((answer) => {
                 let role = parseInt(answer.role);
-                let manager = parseInt(answer
-                    .manager);
+                let manager = parseInt(answer.manager);
                 db.query('INSERT INTO employee SET ?', 
                 {
                     first_name: answer.firstName,
@@ -266,7 +265,45 @@ function addEmployee() {
     });
 };
 
-
+function updateEmployee() {
+    let employeeArray = [];
+    db.query('SELECT id, first_name, last_name FROM EMPLOYEE', (err, res) => {
+        if (err) throw err;
+        res.forEach((element) => {
+            employeeArray.push(`${element.id} ${element.first_name} ${element.last_name}`);
+        });
+        let roleArray = [];
+        db.query('SELECT id, title FROM ROLE', (err, res) => {
+            if (err) throw err;
+            res.forEach((element) => {
+                roleArray.push(`${element.id} ${element.title}`);
+            });
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employee',
+                    message: 'Which employee would you like to update?',
+                    choices: employeeArray
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'Which role would you like to place this employee into?',
+                    choices: roleArray
+                }
+            ])
+            .then((answer) => {
+                let employee = parseInt(answer.employee);
+                let role = parseInt(answer.role);
+                db.query(`UPDATE employee SET role_id = ${role} WHERE id = ${employee}`, (err) => {
+                    if (err) throw err;
+                })
+                console.log('======== Employee Updated ========');
+                home ();
+            });
+        });
+    });
+};
     
     
        
